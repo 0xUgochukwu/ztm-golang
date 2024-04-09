@@ -25,4 +25,14 @@ package main
 import "fmt"
 
 func main() {
+	var favColor string = "Grey"
+	year, age := 1803, 99
+
+	var (
+		firstInitial = 'U'
+		lastInitial  = 'C'
+	)
+
+	var ageInDays int
+	ageInDays = age * 365
 }
