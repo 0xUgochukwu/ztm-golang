@@ -18,6 +18,41 @@ package main
 
 import "fmt"
 
+type Item struct {
+	name        string
+	securityTag bool
+}
+
+func alterSecurityTag(item *Item) {
+	item.securityTag = !item.securityTag
+}
+
+func checkout(items []Item) {
+	for item := range items {
+		items[item].securityTag = false
+	}
+}
+
 func main() {
+	items := []Item{
+		{"apple", true},
+		{"banana", true},
+		{"orange", true},
+		{"grape", true},
+	}
+	fmt.Println("Initial state:")
+	for _, item := range items {
+		fmt.Println(item)
+	}
+	alterSecurityTag(&items[1])
+	fmt.Println("After altering security tag:")
+	for _, item := range items {
+		fmt.Println(item)
+	}
+	checkout(items)
+	fmt.Println("After checkout:")
+	for _, item := range items {
+		fmt.Println(item)
+	}
 
 }
