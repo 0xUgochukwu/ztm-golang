@@ -18,5 +18,20 @@ import "fmt"
 
 type Part string
 
+func printAssemblyLine(assemblyLine []Part) {
+	for i := 0; i < len(assemblyLine); i++ {
+		fmt.Printf("%s, ", assemblyLine[i])
+	}
+	fmt.Println()
+}
 func main() {
+	assemblyLine := []Part{"Door", "Window", "Wheel"}
+	printAssemblyLine(assemblyLine)
+
+	assemblyLine = append(assemblyLine, "Engine", "Seat")
+	printAssemblyLine(assemblyLine)
+
+	newParts := []Part{"Fender", "Hood"}
+	assemblyLine = append(assemblyLine, newParts...)
+	printAssemblyLine(assemblyLine)
 }
