@@ -17,24 +17,37 @@ package main
 import "fmt"
 
 type Player struct {
-	health int
-	energy int
-	name   string
+	health, maxHealth uint
+	energy, maxEnergy uint
+	name              string
 }
 
-func (player *Player) modifyHealth(health int) {
+func (player *Player) modifyHealth(health uint) {
 	player.health += health
+	if player.health > player.maxHealth {
+		player.health = player.maxHealth
+	}
+
 	fmt.Println("Health changed to", player.health)
 }
 
-func (player *Player) modifyEnergy(energy int) {
+func (player *Player) modifyEnergy(energy uint) {
 	player.energy += energy
+	if player.energy > player.maxEnergy {
+		player.energy = player.maxEnergy
+	}
 	fmt.Println("Energy changed to", player.energy)
 }
 
 func main() {
-	player := Player{70, 100, "Player1"}
+	player := Player{
+		health:    100,
+		maxHealth: 100,
+		energy:    100,
+		maxEnergy: 100,
+		name:      "Kobe",
+	}
 
 	player.modifyHealth(10)
-	player.modifyEnergy(-10)
+	player.modifyEnergy(10)
 }
