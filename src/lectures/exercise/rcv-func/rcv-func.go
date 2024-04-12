@@ -16,6 +16,25 @@ package main
 
 import "fmt"
 
-func main() {
+type Player struct {
+	health int
+	energy int
+	name   string
+}
 
+func (player *Player) modifyHealth(health int) {
+	player.health += health
+	fmt.Println("Health changed to", player.health)
+}
+
+func (player *Player) modifyEnergy(energy int) {
+	player.energy += energy
+	fmt.Println("Energy changed to", player.energy)
+}
+
+func main() {
+	player := Player{70, 100, "Player1"}
+
+	player.modifyHealth(10)
+	player.modifyEnergy(-10)
 }
