@@ -36,4 +36,46 @@ import (
 
 func main() {
 	files := []string{"num1.txt", "num2.txt", "num3.txt", "num4.txt", "num5.txt"}
+	grandTotal := 0
+	sumFileNumbers := func(file string) {
+		f, err := os.Open(file)
+		defer f.Close()
+
+		if err != nil {
+			fmt.Println("Error opening file:", err)
+		}
+
+		fileTotal := 0
+
+		reader := bufio.NewReader(f)
+
+		for {
+			line, err := reader.ReadString('\n')
+
+			if err == io.EOF {
+				break
+			}
+			line = line[:len(line)-1]
+			if line == "" {
+				continue
+			}
+
+			num, err := strconv.Atoi(line)
+			if err != nil {
+				fmt.Println("Error converting number:", err)
+				continue
+			}
+
+			fileTotal += num
+		}
+		grandTotal += fileTotal
+	}
+
+	for _, file := range files {
+		go sumFileNumbers(file)
+	}
+
+	time.Sleep(time.Duration(len(files)) * 100 * time.Millisecond)
+
+	fmt.Println("Grand Total:", grandTotal)
 }
