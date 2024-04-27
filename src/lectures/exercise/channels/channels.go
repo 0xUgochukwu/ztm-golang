@@ -40,4 +40,26 @@ func makeJobs() []Job {
 func main() {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	jobs := makeJobs()
+
+	channel := make(chan int, 10)
+
+	for _, job := range jobs {
+		go func(job Job) {
+			channel <- longCalculation(job)
+		}(job)
+	}
+
+	sum := 0
+	resultCount := 0
+
+	for {
+		result := <-channel
+		sum += result
+		resultCount++
+		if resultCount == len(jobs) {
+			break
+		}
+	}
+
+	fmt.Println("Sum of all jobs:", sum)
 }
