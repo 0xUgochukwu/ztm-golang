@@ -19,7 +19,57 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"os"
+	"strings"
+	"sync"
+	"unicode"
 )
 
-func main() {}
+type Total struct {
+	count int
+	sync.Mutex
+}
+
+func analyzeWord(word string, wg *sync.WaitGroup, total *Total) {
+	total.Lock()
+	defer wg.Done()
+	defer total.Unlock()
+
+	wordCount := 0
+
+	for _, letter := range word {
+		if unicode.IsLetter(letter) {
+			wordCount++
+		}
+	}
+
+	total.count += wordCount
+}
+
+func main() {
+	var wg sync.WaitGroup
+	reader := bufio.NewReader(os.Stdin)
+	totalLetters := Total{}
+
+	for {
+		line, err := reader.ReadString('\n')
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			panic(err)
+		}
+		line = line[:len(line)-1]
+		for _, word := range strings.Split(line, " ") {
+			wg.Add(1)
+			go analyzeWord(word, &wg, &totalLetters)
+		}
+	}
+
+	wg.Wait()
+	fmt.Printf("Total letters: %v\n", totalLetters.count)
+
+}
